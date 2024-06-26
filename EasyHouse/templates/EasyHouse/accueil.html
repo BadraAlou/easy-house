@@ -1,0 +1,285 @@
+{% extends "EasyHouse/base.html" %}
+{% block content %}
+<header>
+    <style>
+    .carousel-control-prev,
+    .carousel-control-next {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      border-radius: 50%; /* Rounded buttons */
+    }
+
+    /* Carousel styling */
+    #introCarousel,
+    .carousel-inner,
+    .carousel-item,
+    .carousel-item.active {
+      height: 100vh; /* Adjusted height */
+    }
+
+    .carousel-item:nth-child(1) {
+      background-image: url('static/img/image05.webp');
+      background-repeat: repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+    .carousel-item:nth-child(2) {
+      background-image: url('static/img/4.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+    .carousel-item:nth-child(3) {
+      background-image: url('static/img/meuble.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+
+    /* Height for devices larger than 576px */
+    @media (min-width: 576px) {
+      #introCarousel {
+        margin-top: 58.59px;
+      }
+      #introCarousel,
+      .carousel-inner,
+      .carousel-item,
+      .carousel-item.active {
+        height: 92vh; /* Adjusted height */
+      }
+    }
+    @media (max-width: 576px) {
+      #introCarousel,
+      .carousel-inner,
+      .carousel-item,
+      .carousel-item.active {
+        height: 100vh; /* Réduire la hauteur pour les petits écrans */
+      }
+    
+      .carousel-item {
+        background-size: contain; /* Assure l'affichage complet de l'image */
+      }
+    
+      .text-container {
+        position: absolute;
+        bottom: 10px; /* Positionner le texte en bas */
+        left: 50%;
+        transform: translateX(-50%);
+        color: white; /* Couleur du texte */
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+        padding: 10px; /* Espacement intérieur */
+        max-width: 90%; /* Largeur maximale du texte */
+      }
+      .input-group {
+        margin-bottom: 10px; /* Réduire l'espacement sous la barre de recherche */
+      }
+    
+      .carousel-control-prev,
+      .carousel-control-next {
+        top: auto;
+        bottom: 10px; /* Ajuster la position des boutons */
+        transform: translateY(0);
+      }
+    
+      .carousel-control-prev {
+        left: 10px; /* Ajuster la position du bouton précédent */
+      }
+    
+      .carousel-control-next {
+        right: 10px; /* Ajuster la position du bouton suivant */
+      }
+    }
+
+    /* Reposition the buttons for larger screens */
+    @media (max-width: 763px) {
+      .carousel-control-prev,
+      .carousel-control-next {
+        top: auto;
+        bottom: 40%; /* Adjust this value as needed */
+        transform: translateY(0);
+      }
+
+      .carousel-control-prev {
+        left: 10px; /* Adjust this value as needed */
+      }
+
+      .carousel-control-next {
+        right: 10px; /* Adjust this value as needed */
+      }
+      .card{
+        margin-bottom: 15%;
+      }
+    }
+
+    .text-container {
+      margin-top: 30%; /* Adjusted margin */
+    }
+    .carousel-item .text-container {
+      position: absolute;
+      bottom: 20px; /* Ajuste la position verticale du texte au besoin */
+      left: 50%;
+      transform: translateX(-50%);
+      color: white; /* Couleur du texte */
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour améliorer la lisibilité */
+      padding: 10px 10px; /* Espacement intérieur */
+      max-width: 80%; /* Largeur maximale du texte */
+    }
+    </style>
+
+    <!-- Carousel wrapper -->
+    <div id="introCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-carousel-init>
+      <!-- Indicators -->
+      <div class="carousel-indicators">
+        <li data-mdb-target="#introCarousel" data-mdb-slide-to="0" class="active"></li>
+        <li data-mdb-target="#introCarousel" data-mdb-slide-to="1"></li>
+        <li data-mdb-target="#introCarousel" data-mdb-slide-to="2"></li>
+      </div>
+
+      <!-- Inner -->
+      <div class="carousel-inner">
+        <!-- Single item -->
+        <div class="carousel-item active">
+          <div class="mask" style="background-color: rgba(0, 0, 0, 0); ">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div class="text-white text-center text-container">
+                <form method="post" action="{% url 'recherche_zone' %}">
+                  {% csrf_token %}
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control bg-white" name="zone_recherchee" placeholder="Rechercher par zone" aria-label="Rechercher par zone" aria-describedby="button-addon2">
+                    <button class="btn btn-primary" style="background-color: #057d8d;" type="submit" id="button-addon2">Rechercher</button>
+                  </div>
+                </form>
+                <h4>Des maisons pour tous les goûts, des rêves pour chaque porte.</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Single item -->
+        <div class="carousel-item">
+          <div class="mask" style="background-color: rgba(0, 0, 0, 0); ">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div class="text-white text-center text-container">
+                <form method="post" action="{% url 'recherche_zone' %}">
+                  {% csrf_token %}
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control bg-white" name="zone_recherchee" placeholder="Rechercher par zone" aria-label="Rechercher par zone" aria-describedby="button-addon2">
+                    <button class="btn btn-primary" style="background-color: #057d8d;" type="submit" id="button-addon2">Rechercher</button>
+                  </div>
+                </form>
+                <h4>Construire des souvenirs, trouver un foyer. Bienvenue chez Easy House.</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Single item -->
+        <div class="carousel-item">
+          <div class="mask" style="background-color: rgba(0, 0, 0, 0); ">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div class="text-white text-center text-container">
+                <form method="post" action="{% url 'recherche_zone' %}">
+                  {% csrf_token %}
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control bg-white" name="zone_recherchee" placeholder="Rechercher par zone" aria-label="Rechercher par zone" aria-describedby="button-addon2">
+                    <button class="btn btn-primary" style="background-color: #057d8d;" type="submit" id="button-addon2">Rechercher</button>
+                  </div>
+                </form>
+                <h4 mt-3>Laissez-nous vous aider à ouvrir la porte vers votre avenir.</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Inner -->
+
+      <!-- Controls -->
+      <a class="carousel-control-prev" href="#introCarousel" role="button" data-mdb-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#introCarousel" role="button" data-mdb-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <!-- Carousel wrapper -->
+</header>
+
+     <!--Section: Content-->
+<section class="container mt-5">
+  <div class="row">
+      <!-- Left side for Text -->
+      <div class="col-md-4 " style="text-align: center; ">
+          <div class="card" style="margin-top: 8%;">
+              <div class="card-body " >
+                  <h4 class="card-title"><strong>Obtenir des recommandations pour la maison.</strong></h4>
+                  <p class="card-text"><strong>"Le bonheur commence à la maison - trouvez la vôtre aujourd'hui."</strong></p>
+                 
+              </div>
+          </div>
+      </div>
+      <!-- Right side for Images -->
+      <div class="col-md-8">
+          <div class="card">
+              <div class="card-body">
+                  <div class="row">
+                      <!-- First Small Card -->
+                      <div class="col-md-4 ">
+                          <div class="card">
+                              <img src="static/img/R(2).jpg" class="card-img-top img-fluid " alt="First image">
+                          </div>
+                      </div>
+                      <!-- Second Small Card -->
+                      <div class="col-md-4">
+                          <div class="card">
+                              <img src="static/img/144.jpg" class="card-img-top img-fluid"  alt="Second image">
+                          </div>
+                      </div>
+                      <!-- Third Small Card -->
+                      <div class="col-md-4">
+                          <div class="card">
+                              <img src="static/img/image03.jpg" class="card-img-top img-fluid " alt="Third image">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <section class="container mt-5">
+    <div class="row">
+        <!-- First Card -->
+        <div class="col-md-6">
+            <div class="card mb-4" style="height: 95%;">
+                <img src="static/img/Acheter.png" class="card-img-top" alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title"><strong>Parcourir les maisons</strong></h3>
+                    <p class="card-text"><strong>Trouvez votre logement avec une experience photo immersive et le plus grand nombre d'annonces, y compris des choses que vous ne trouverez nulle part ailleurs.</strong></p>
+                </div>
+                <div class="card-footer d-flex justify-content-center">
+                  <a href="{% url 'property_list' %}" class="btn btn-primary" style="background-color: #057d8d;"><strong>Parcourir les maisons</strong></a>
+              </div>
+            </div>
+        </div>
+        <!-- Second Card -->
+        <div class="col-md-6">
+            <div class="card mb-4" style="height:95%;">
+                <img src="static/img/louer.png" class="card-img-top" alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title"><strong>Louer une maison</strong></h3>
+                    <p class="card-text"><strong>Nous créons une expérience en ligne transparente ,qu'il s'agisse de faire des achats sur le plus grand réseau de location,de faire une demande ou de payer le louer.</strong></p>
+                </div>
+                <div class="card-footer d-flex justify-content-center">
+                  <a href="{% url 'recherche_zone_par_defaut' %}" class="btn btn-primary" style="background-color: #057d8d;"><strong>Trouvez des locations</strong></a>
+              </div>
+            </div>
+        </div>
+        <!-- Third Card -->
+{% endblock  %}
+

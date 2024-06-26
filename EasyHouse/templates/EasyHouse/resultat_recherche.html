@@ -1,0 +1,234 @@
+<!--
+  AIzaSyDqWc7Nn919DCN1OSPrXf3gcBtpsE_Zzcs
+  f518043e39ea59
+-->
+{% extends "EasyHouse/base.html" %}
+{% block content %}
+<!--
+ @license
+ Copyright 2024 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+  .carousel-control-prev,
+  .carousel-control-next {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      border-radius: 50%; /* Rounded buttons */
+  }
+  /**
+   * @license
+   * Copyright 2024 Google LLC. All Rights Reserved.
+   * SPDX-License-Identifier: Apache-2.0
+   */
+
+  /* Optional: Makes the sample page fill the window. */
+  .view-toggle {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    margin-top: 100px; /* Ajustez cette valeur en fonction de la hauteur de votre barre de navigation */
+    padding-left: 20px;
+}
+
+.view-toggle a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.view-toggle a.active {
+    color: #a11c1c;
+    font-weight: bold;
+}
+
+.view-toggle a .icon {
+    margin-right: 8px;
+}
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  /* Div pour contenir la carte */
+  #votre-carte {
+    height: 80vh;
+    width: 100%;
+  }
+
+  /* Style pour le cadre d'info */
+  .info-window {
+    max-width: 300px;
+    
+  }
+
+  /* Style pour les images */
+  .carousel-img {
+    max-width: 100%;
+    height: auto;
+    width: 50%;
+    max-height: 150px; /* Limiter la hauteur de l'image */
+  }
+    /* Style pour l'info-bulle */
+    .gm-style-iw {
+      width: 300px; /* Ajustez la largeur selon vos besoins */
+      max-width: 100%; /* Pour s'assurer que l'info-bulle ne dépasse pas la largeur de la carte */
+      height: auto; /* Ajustement automatique de la hauteur en fonction du contenu */
+      max-height: 400px; /* Limiter la hauteur maximale de l'info-bulle */
+      overflow-y: auto; /* Ajouter une barre de défilement verticale si le contenu dépasse la hauteur maximale */
+    }
+     /* Style pour les images dans l'info-bulle */
+.gm-style-iw img {
+  max-width: 100%;
+  width: 100%; /* Les images occupent toute la largeur de l'info-bulle */
+  height: auto; /* La hauteur est ajustée automatiquement pour maintenir le ratio hauteur-largeur */
+  display: block; /* Pour s'assurer que les images ne déforment pas la mise en page */
+}
+/* Style pour le titre de la maison */
+.gm-style-iw h5 {
+  font-size: 17px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+/* Style pour la description */
+.gm-style-iw p.description {
+  font-size: 16px;
+  color: #333;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+/* Style pour le prix */
+.price {
+  font-size: 16px;
+  color: black; /* Couleur rose */
+  font-weight: bold;
+  }
+  
+/* Style pour l'icône de prix */
+  .price-icon {
+  font-size: 20px;
+  color: black; /* Couleur rose */
+  margin-right: 5px;
+  }
+
+
+  .info-window .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  @media (max-width: 768px) {
+    .view-toggle {
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .view-toggle a {
+      margin-bottom: 10px;
+  }
+  }
+  
+</style>
+<div class="view-toggle">
+  <a href="{% url 'property_list' %}">
+      <span class="icon">&#x2630;</span> <!-- Icône pour la liste -->
+      LISTE
+  </a>
+  <a href="{% url 'recherche_zone_par_defaut' %}"class="active">
+      <span class="icon">&#x1F4CD;</span> <!-- Icône pour la carte -->
+      CARTE
+  </a>
+</div>
+<div class="container">
+  <!-- Div pour contenir la carte -->
+  <div class="map-container" id="votre-carte"></div>
+</div>
+
+<script>
+  var previousInfoWindow = null; // Variable pour suivre l'info-bulle précédemment ouverte
+
+  function initMap() {
+    var lat = {{ lat }};
+    var lng = {{ lng }};
+
+    var map = new google.maps.Map(document.getElementById('votre-carte'), {
+      center: { lat: lat, lng: lng },
+      zoom: 14,
+      mapId: 'f518043e39ea59',
+      gestureHandling: 'greedy'
+    });
+
+    // Parcourir les marqueurs et les afficher sur la carte
+    {% for marqueur in marqueurs %}
+    var marker{{ forloop.counter }} = new google.maps.Marker({
+      position: { lat: {{ marqueur.latitude }}, lng: {{ marqueur.longitude }}},
+      map: map,
+      title: 'Maison à louer',
+      icon: {
+        url: 'https://i.pinimg.com/originals/a5/f7/c5/a5f7c5852ac915fdd1ee24d03ef166d1.jpg',
+        scaledSize: new google.maps.Size(30, 30)
+      }
+    });
+
+    var contentString{{ forloop.counter }} = `
+      <div class="info-window">
+        <div id="carousel-{{ marqueur.property.id }}" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            {% for image in marqueur.property.photos.all|slice:":3" %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <img src="{{ image.image.url }}" class="d-block carousel-img" alt="...">
+            </div>
+            {% endfor %}
+          </div>
+          <a class="carousel-control-prev" href="#carousel-{{ marqueur.property.id }}" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-{{ marqueur.property.id }}" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        <h5>{{ marqueur.property.titre }}</h5>
+        <p class="description">{{ marqueur.property.description| truncatewords:18 }}</p>
+        
+        <a href="{% url 'property_detail' marqueur.property.id %}" class="btn btn-primary">Voir l'offre</a>
+      </div>
+    `;
+
+    var infowindow{{ forloop.counter }} = new google.maps.InfoWindow({
+      content: contentString{{ forloop.counter }}
+    });
+
+    marker{{ forloop.counter }}.addListener('click', function() {
+      if (previousInfoWindow) {
+        previousInfoWindow.close(); // Fermer l'info-bulle précédemment ouverte
+      }
+      infowindow{{ forloop.counter }}.open(map, marker{{ forloop.counter }});
+      previousInfoWindow = infowindow{{ forloop.counter }};
+    });
+    {% endfor %}
+  }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqWc7Nn919DCN1OSPrXf3gcBtpsE_Zzcs&callback=initMap&libraries=places"></script>
+{% endblock content %}

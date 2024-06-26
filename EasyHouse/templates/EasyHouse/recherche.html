@@ -1,0 +1,77 @@
+{% extends "EasyHouse/base.html" %}
+{% block content %}
+<!--
+ @license
+ Copyright 2024 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      /**
+       * @license
+       * Copyright 2024 Google LLC. All Rights Reserved.
+       * SPDX-License-Identifier: Apache-2.0
+       */
+
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Définir une disposition en colonnes */
+      .container {
+        display: flex;
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Diviser en deux colonnes */
+      .left-column {
+        flex: 0 0 70%;
+        overflow: hidden;
+      }
+      
+      .right-column {
+        flex: 1; /* Prendre le reste de l'espace disponible */
+      }
+
+      /* Shift the flag icon to the right so that the bottom of the flagpole
+       * aligns with the anchor point. */
+      .flag-icon {
+        position: relative;
+        left: 10px;
+      }
+      .map-container {
+        margin-top: 10%;
+         /* Ajustez cette valeur pour déplacer la carte vers le bas */
+      }
+      
+    </style>
+    <div class="container">
+      <div class="left-column">
+        <!-- Div pour contenir la carte -->
+        <div class="map-container" id="votre-carte" style="height: 90vh; width: 100%;"></div>
+      </div>
+      
+      <div class="right-column">
+        <!-- Contenu de la deuxième colonne ici -->
+      </div>
+    </div>
+    
+    <script>
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('votre-carte'), {
+          center: {lat:12.6351525, lng: -8.0437909}, // Remplacez YOUR_LATITUDE et YOUR_LONGITUDE par vos coordonnées
+          zoom: 16, // Niveau de zoom initial
+          mapId: 'f518043e39ea59' // ID de votre carte stylisée
+        });
+
+        
+      }
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqWc7Nn919DCN1OSPrXf3gcBtpsE_Zzcs&callback=initMap&libraries=places"></script>
+{% endblock content %}

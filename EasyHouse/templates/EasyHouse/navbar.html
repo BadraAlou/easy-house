@@ -1,0 +1,544 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!--=============== CSS ===============-->
+    <title></title>
+    <style>
+ .login {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s; /* Ajuster la transition pour une animation fluide */
+}
+
+.show-login, .show-signup, .show-confirmation {
+    opacity: 1;
+    pointer-events: initial;
+}
+
+.modal3 {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.2); /* Couleur de fond semi-transparente avec une opacité moindre */
+    padding-top: 30px; /* Diminuer la marge du haut pour faire monter le modal */
+}
+
+.modal-content3 {
+    background-color: #fefefe;
+    margin: 5% auto; /* Ajuster la marge pour centrer verticalement */
+    padding: 20px;
+    border-radius: 10px; /* Arrondir les coins */
+    border: 1px solid #888;
+    width: 90%; /* Largeur de 90% */
+    max-width: 500px; /* Largeur maximale */
+    height: auto; /* Ajustement de la hauteur automatique */
+    max-height: 80%; /* Limiter la hauteur maximale pour éviter le débordement */
+    overflow-y: auto; /* Ajouter une barre de défilement verticale si nécessaire */
+    text-align: center;
+}
+
+/* Flou pour l'arrière-plan du modal de confirmation */
+.modal-confirmation3::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* Couleur de fond semi-transparente avec une opacité moindre */
+    backdrop-filter: blur(20px); /* Appliquer un flou */
+    z-index: -1; /* Assure-toi que l'élément soit en arrière-plan */
+}
+
+/* Styles spécifiques pour le contenu du modal de confirmation */
+.modal-header3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    background-color: #E2E2E2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content3 h2 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.modal-content3 h3 {
+    font-size: 20px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.modal-content3 p {
+    font-size: 16px;
+    color: #777;
+    margin: 10px 0;
+}
+
+.btn-cof {
+    background-color: #E60023; /* Couleur du bouton */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.btn-cof:hover {
+    background-color: aquamarine;
+}
+@media only screen and (max-width: 600px) { /* Modifier 600px selon votre définition de "petits écrans" */
+    .modal3 {
+        padding-top: 0; /* Réinitialiser la marge du haut */
+        height: 100%; /* Utiliser la hauteur totale de l'écran */
+        margin-top: 0; /* Réinitialiser la marge supérieure */
+    }
+
+    .modal-content3 {
+        margin: 0; /* Réinitialiser la marge */
+        padding: 20px;
+        width: 100%; /* Utiliser la largeur totale de l'écran */
+        max-width: none; /* Annuler la largeur maximale */
+        border-radius: 0; /* Supprimer le bord arrondi */
+        border: none; /* Supprimer la bordure */
+        height: 100%; /* Utiliser la hauteur totale de l'écran */
+        max-height: none; /* Annuler la hauteur maximale */
+    }
+
+    .modal-confirmation3::before {
+        content: none; /* Ne pas afficher le flou d'arrière-plan */
+    }
+}
+.welcome-message {
+    color:#D40020;
+    position: relative;
+    top: 5px; /* Ajustez la valeur selon la distance que vous voulez déplacer l'élément vers le bas */
+}
+
+.hide-on-menu-open {
+    display: none;
+}
+/* Modal container */
+/* Modal container */
+.modal2 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content2 {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Close button */
+.close2 {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close2:hover,
+.close2:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Confirm and cancel buttons */
+.btn-confirm2, .btn-cancel2 {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-confirm2 {
+    background-color: #057d8d; /* Green */
+    color: white;
+}
+
+.btn-cancel2 {
+    background-color: black; /* Red */
+    color: white;
+}
+.messages {
+    margin-top: 20px;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: red;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+    </style>
+</head>
+<body>
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+      <!--==================== CONFIRMATION MODAL ====================-->
+      <div id="confirmation-modal" class="modal3 modal-confirmation3">
+        <div class="modal-content3">
+            <div class="modal-header3">
+                <div class="user-avatar">
+                    <span>A</span>
+                </div>
+                <p id="user-email">abagayoko304@gmail.com</p> <!-- Placeholder à remplacer par du JS -->
+            </div>
+            <h2>Bienvenue sur EasyHouse</h2>
+            <h2 id="user-username">{{ user.username }} !</h2> <!-- Placeholder à remplacer par du JS -->
+            <p>Félicitations pour votre inscription! Vous avez pris la première étape vers une expérience enrichissante. Nous espérons que vous apprécierez votre séjour parmi nous et que notre plateforme répondra à vos attentes.</p>
+            <button id="continue-button" class="btn-cof" >Continuer</button>
+        </div>
+    </div>
+
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <img src="{% static '/img/logo2.png' %}" alt="" />
+            </a>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="{% url 'accueil' %}" class="nav__link">Accueil</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="{% url 'property_list' %}" class="nav__link">Propriétés</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="{% url 'about' %}" class="nav__link">A-Propos</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav__item">
+                        <a href="{% url 'favorite_properties' %}" class="nav__link">Mes Favoris</a>
+                    </li>
+                    {% endif %} 
+                    <li class="nav__item">
+                        <a href="{% url 'contact' %}" class="nav__link">Contact</a>
+                    </li>
+                </ul>
+
+                <!-- Close button -->
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
+            </div>
+
+            <div class="nav__actions">
+                {% if user.is_authenticated %}
+                    <div class="welcome-message-container">
+                        <p class="welcome-message">{{ user.username }}</p>
+                    </div>
+                    <form method="post" action="{% url 'logout' %}" id="logout-form">
+                        {% csrf_token %}
+                        <button type="button" class="nav__logout" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i></button>
+                    </form>
+                {% else %}
+                    <!-- Login button -->
+                    <i class="ri-user-line nav__login" id="login-btn"></i>
+                {% endif %}
+                <!-- Toggle button -->
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-line"></i>
+                </div>
+            </div>
+            
+            <!-- Logout Confirmation Modal -->
+            <div id="logout-modal" class="modal2">
+                <div class="modal-content2">
+                    <span class="close2" onclick="closeLogoutModal()">&times;</span>
+                    <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
+                    <button onclick="confirmLogout()" class="btn-confirm2">Oui</button>
+                    <button onclick="closeLogoutModal()" class="btn-cancel2">Non</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!--==================== LOGIN ====================-->
+    <div class="login" id="login">
+        <form method="post" action="{% url 'login' %}" class="login__form" id="login-form">
+            {% csrf_token %}
+            {{ form.as }}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <h2 class="login__title">Connexion</h2>
+            <div class="login__group">
+                <div>
+                    <label for="username" class="login__label">Nom d'utilisateur</label>
+                    <input type="text" name="username" placeholder="Entrez votre nom d'utilisateur" id="username" class="login__input" required>
+                </div>
+                <div>
+                    <label for="password" class="login__label">Mot de passe</label>
+                    <input type="password" name="password" placeholder="Entrez votre mot de passe" id="password" class="login__input" required>
+                </div>
+            </div>
+            <div>
+                <p class="login__signup">
+                    Vous n'avez pas de compte? <a href="#" id="signup-link">Inscrivez-vous</a>
+                </p>
+                <button type="submit" class="login__button">Se connecter</button>
+            </div>
+           <!-- Ajoutez la classe "error" et "error-message" si le message est une erreur -->
+<div id="login-error-message" class="message{% if error %} error error-message{% endif %}">
+    {{ message }}
+</div>
+        </form>
+        <i class="ri-close-line login__close" id="login-close"></i>
+    </div>
+    
+    <!--==================== SIGNUP ====================-->
+    <div class="login" id="signup">
+        <form method="post" action="{% url 'register' %}" class="login__form" id="signup-form">
+            {% csrf_token %}
+            {{ register_form.as_p }}
+            <h2 class="login__title">Inscription</h2>
+            <div class="login__group">
+                <div>
+                    <label for="new-username" class="login__label">Nom d'utilisateur</label>
+                    <input type="text" name="username" placeholder="Entrez votre nom d'utilisateur" id="new-username" class="login__input" required>
+                </div>
+                <div>
+                    <label for="email" class="login__label">Email</label>
+                    <input type="email" name="email" placeholder="Entrez votre email" id="email" class="login__input" required>
+                </div>
+                <div>
+                    <label for="new-password" class="login__label">Mot de passe</label>
+                    <input type="password" name="password1" placeholder="Entrez votre mot de passe" id="new-password" class="login__input" required>
+                </div>
+                <div>
+                    <label for="new-password2" class="login__label">Confirmez le mot de passe</label>
+                    <input type="password" name="password2" placeholder="Confirmez votre mot de passe" id="new-password2" class="login__input" required>
+                </div>
+            </div>
+            <div>
+                <p class="login__signup">
+                    Vous avez déjà un compte? <a href="#" id="login-link">Connectez-vous</a>
+                </p>
+                <button type="submit" class="login__button">S'inscrire</button>
+            </div>
+        </form>
+        <i class="ri-close-line login__close" id="signup-close"></i>
+    </div>
+    
+    <!--=============== MAIN JS ===============-->
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', async (event) =>  {
+            // Menu variables
+            const navMenu = document.getElementById('nav-menu'),
+                navToggle = document.getElementById('nav-toggle'),
+                navClose = document.getElementById('nav-close'),
+                welcomeMessage = document.querySelector('.welcome-message');
+        
+            // Login and signup variables
+            const login = document.getElementById('login'),
+                loginBtn = document.getElementById('login-btn'),
+                loginClose = document.getElementById('login-close'),
+                signup = document.getElementById('signup'),
+                signupLink = document.getElementById('signup-link'),
+                loginLink = document.getElementById('login-link'),
+                signupClose = document.getElementById('signup-close'),
+                loginForm = document.getElementById('login-form'),
+                errorMessageElement = document.getElementById('login-error-message'),
+                registrationForm = document.getElementById('signup-form'),
+                confirmationModal = document.getElementById('confirmation-modal'),
+                continueButton = document.getElementById('continue-button'),
+                logoutModal = document.getElementById('logout-modal'),
+                logoutForm = document.getElementById('logout-form');
+        
+            // Show menu
+            if (navToggle) {
+                navToggle.addEventListener('click', () => {
+                    navMenu.classList.add('show-menu');
+                    welcomeMessage.classList.add('hide-on-menu-open');
+                });
+            }
+        
+            // Hide menu
+            if (navClose) {
+                navClose.addEventListener('click', () => {
+                    navMenu.classList.remove('show-menu');
+                    welcomeMessage.classList.remove('hide-on-menu-open');
+                });
+            }
+        
+            // Show login form
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    login.classList.add('show-login');
+                    signup.classList.remove('show-signup');
+                });
+            }
+        
+            // Hide login form
+            if (loginClose) {
+                loginClose.addEventListener('click', () => {
+                    login.classList.remove('show-login');
+                });
+            }
+        
+            // Show signup form
+            if (signupLink) {
+                signupLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    login.classList.remove('show-login');
+                    signup.classList.add('show-signup');
+                });
+            }
+        
+            // Show login form
+            if (loginLink) {
+                loginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    signup.classList.remove('show-signup');
+                    login.classList.add('show-login');
+                });
+            }
+        
+            // Hide signup form
+            if (signupClose) {
+                signupClose.addEventListener('click', () => {
+                    signup.classList.remove('show-signup');
+                });
+            }
+        
+            // Handle login form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(loginForm);
+                    try {
+                        const response = await fetch(loginForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                            }
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            errorMessageElement.innerHTML = '';
+                            window.location.href = loginForm.querySelector('input[name="next"]').value || '/';
+                        } else {
+                            errorMessageElement.innerHTML = data.message;
+                            login.classList.add('show-login');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        
+            // Check for error messages and show login form if present
+            const messages = document.querySelector('.messages');
+            if (messages && messages.children.length > 0) {
+                login.classList.add('show-login');
+            }
+        
+            // Handle registration form submission and modal display
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(registrationForm);
+                    try {
+                        const response = await fetch(registrationForm.action, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            document.getElementById('user-email').textContent = data.email;
+                            document.getElementById('user-username').textContent = data.username + ' !';
+                            const firstLetter = data.username.charAt(0).toUpperCase();
+                            document.querySelector('.user-avatar span').textContent = firstLetter;
+                            signup.style.display = 'none';
+                            confirmationModal.style.display = 'block';
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        
+            if (continueButton) {
+                continueButton.addEventListener('click', () => {
+                    confirmationModal.style.display = 'none';
+                    window.location.href = "{% url 'property_list' %}";
+                });
+            }
+        
+            // Logout modal functions
+            window.showLogoutModal = function () {
+                logoutModal.style.display = 'block';
+            };
+        
+            window.closeLogoutModal = function () {
+                logoutModal.style.display = 'none';
+            };
+        
+            window.confirmLogout = function () {
+                logoutForm.submit();
+            };
+        });
+        
+    </script>
+
+
+</body>
+</html>

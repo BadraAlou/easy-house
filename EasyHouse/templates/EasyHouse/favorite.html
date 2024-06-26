@@ -1,0 +1,365 @@
+{% extends "EasyHouse/base.html" %}
+
+{% block content %}
+<style>
+    .filter-form2 {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        margin-top: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        align-items: center;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-form2 select,
+    .filter-form2 input {
+        padding: 5px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .filter-form2 button {
+        padding: 10px 15px;
+        background-color: #a11c1c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .view-toggle {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        padding-left: 20px;
+        padding-top: 10%;
+    }
+
+    .view-toggle a {
+        text-decoration: none;
+        color: black;
+        font-size: 18px;
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .view-toggle a.active {
+        color: #a11c1c;
+        font-weight: bold;
+    }
+
+    .view-toggle a .icon {
+        margin-right: 8px;
+    }
+
+    .property-list-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .property-card {
+        position: relative;
+        width: 80%;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #fff;
+        transition: transform 0.2s;
+    }
+
+    .property-card:hover {
+        transform: scale(1.02);
+    }
+
+    .property-image {
+        width: 30%;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .property-image img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .property-info {
+        width: 70%;
+    }
+
+    .property-info h2 {
+        margin: 0;
+        font-size: 24px;
+        color: black;
+        cursor: pointer;
+    }
+
+    .property-price {
+        font-size: 24px;
+        color: #a11c1c;
+        margin: 10px 0;
+    }
+
+    .property-details {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .detail-icon {
+        margin-right: 5px;
+    }
+
+    .detail-text {
+        margin-right: 15px;
+    }
+
+    .property-description {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .icon {
+        font-size: 16px;
+        color: #333;
+        margin-right: 5px;
+    }
+
+    .view-details-button {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-top: 15px;
+        background-color: #057d8d;;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+    }
+
+    .view-details-button:hover {
+        background-color: black;
+    }
+
+    .favorite-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 45px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .favorite-icon.active {
+        color: #a11c1c;
+    }
+
+    .no-favorites-message {
+        font-size: 30px;
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    .no-favorites-message {
+        text-align: center;
+        margin: 20px;
+        font-size: 18px;
+        color: #555;
+    }
+
+    .go-to-properties-button {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-top: 15px;
+        background-color: #a11c1c;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+    }
+
+    .go-to-properties-button:hover {
+        background-color: #800000;
+    }
+    @media (max-width: 768px) {
+        .filter-form2 {
+            flex-direction: column;
+            align-items: stretch;
+            margin-top: auto;
+        }
+
+        .filter-form2 select,
+        .filter-form2 input,
+        .filter-form2 button {
+            width: 95%;
+            margin: 5px 0;
+        }
+
+        .property-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .property-image {
+            width: 100%;
+            height: auto;
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+
+        .property-info h2 {
+            font-size: 20px;
+        }
+
+        .property-price {
+            font-size: 18px;
+        }
+
+        .view-toggle {
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20%;
+        }
+
+        .view-toggle a {
+            margin-bottom: 10px;
+        }
+        .favorite-icon {
+            top: auto;
+            bottom: 10px;
+            right: 10px;
+        }
+    }
+</style>
+
+<div class="view-toggle">
+    <a href="{% url 'property_list' %}">
+        <span class="icon">&#x2630;</span> <!-- Icône pour la liste -->
+        LISTE
+    </a>
+    <a href="{% url 'recherche_zone_par_defaut' %}">
+        <span class="icon">&#x1F4CD;</span> <!-- Icône pour la carte -->
+        CARTE
+    </a>
+    <a href="{% url 'favorite_properties' %}" class="active">
+        <span class="icon">&#9829;</span> <!-- Icône pour les favoris -->
+        FAVORIS
+    </a>
+</div>
+
+<div class="property-list-container">
+    {% if properties %}
+        {% for property in properties %}
+        <div class="property-card" id="property-card-{{ property.pk }}">
+            <div class="property-image" onclick="window.location.href='{% url 'property_detail' property.pk %}'">
+                {% if property.photos.first %}
+                <img src="{{ property.photos.first.image.url }}" alt="{{ property.titre }}">
+                {% else %}
+                <img src="path/to/placeholder/image.jpg" alt="No Image Available">
+                {% endif %}
+            </div>
+            <div class="property-info">
+                <h2 onclick="window.location.href='{% url 'property_detail' property.pk %}'">{{ property.titre }}</h2>
+                <div class="property-price">{{ property.prix }} fcfa</div>
+                <div class="property-details">
+                    <div class="detail-item">
+                        <span class="icon">&#x1F3E2;</span>
+                        <span class="detail-text">{{ property.superficie_interne }} m²</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="icon">&#x1F6CF;</span>
+                        <span class="detail-text">{{ property.nombre_de_chambres }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="icon">&#x1F6BD;</span>
+                        <span class="detail-text">{{ property.nombre_de_toilettes }}</span>
+                    </div>
+                </div>
+                <div class="property-description">
+                    {{ property.description|truncatewords:20 }}
+                </div>
+                <a href="{% url 'property_detail' property.pk %}" class="view-details-button">Voir Détails</a>
+                <span class="favorite-icon active" data-property-id="{{ property.pk }}" onclick="toggleFavorite(this)">&#9829;</span>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="no-favorites-message">
+            Vous n'avez pas encore ajouté de favoris.
+            <br><br>
+            <a href="{% url 'property_list' %}" class="go-to-properties-button">Ajouter des Favoris</a>
+        </div>
+    {% endif %}
+</div>
+<script>
+    const toggleFavoriteUrl = "{% url 'toggle_favorite' property_id=0 %}".replace('/0/', '/');
+    const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+    function toggleFavorite(element) {
+        var propertyId = element.getAttribute('data-property-id');
+
+        if (!isAuthenticated) {
+            // Afficher le formulaire de connexion
+            const login = document.getElementById('login');
+            login.classList.add('show-login');
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', toggleFavoriteUrl + propertyId + '/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.is_favorite) {
+                    element.classList.add('active');
+                    element.innerHTML = '&#9829;'; // Icône de cœur plein
+                } else {
+                    element.classList.remove('active');
+                    element.innerHTML = '&#9825;'; // Icône de cœur vide
+
+                    // Supprimer la carte de la propriété du DOM
+                    var propertyCard = document.getElementById('property-card-' + propertyId);
+                    if (propertyCard) {
+                        propertyCard.remove();
+                    }
+
+                    // Vérifier s'il n'y a plus de propriétés favorites et afficher le message si nécessaire
+                    if (document.querySelectorAll('.property-card').length === 0) {
+                        var container = document.querySelector('.property-list-container');
+                        var noFavoritesMessage = document.createElement('div');
+                        noFavoritesMessage.className = 'no-favorites-message';
+                        noFavoritesMessage.innerText = "Vous n'avez pas encore ajouté de favoris.";
+                        container.appendChild(noFavoritesMessage);
+                    }
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+{% endblock %}

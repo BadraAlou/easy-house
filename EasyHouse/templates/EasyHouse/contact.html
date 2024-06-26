@@ -1,0 +1,112 @@
+{% extends "EasyHouse/base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+</head>
+<body>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h1>Nous sommes là pour vous aider !</h1>
+            <p><strong>Votre satisfaction est notre priorité. Parlons de vos projets immobiliers dès aujourd'hui.</strong></p>
+            <img src="{% static 'img/contact.svg' %}" alt="Contact Image">
+        </div>
+        <div class="contact-form">
+            <form id="contact-form" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Envoyer le Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Section FAQ -->
+    <div class="faq-section">
+        <h2>FAQ</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleAnswer(this)">
+                    <span>Comment puis-je savoir si un logement est disponible à la location ?</span>
+                </div>
+                <div class="faq-answer">
+                    <p>•Chaque annonce sur notre plateforme est mise à jour régulièrement. Vous pouvez contacter directement l’agence ou le propriétaire pour vérifier la disponibilité actuelle du logement qui vous intéresse.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleAnswer(this)">
+                    <span>Comment puis-je être sûr de la qualité du logement que je loue ?</span>
+                </div>
+                <div class="faq-answer">
+                    <p>•Nous travaillons uniquement avec des agences immobilières réputées et des propriétaires vérifiés pour garantir la qualité des logements listés sur notre plateforme. De plus, les avis et les évaluations des précédents locataires peuvent vous fournir des informations supplémentaires.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleAnswer(this)">
+                    <span>Quelles sont les mesures de sécurité prises pour protéger mes données personnelles ?</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Nous utilisons des protocoles de sécurité avancés pour protéger vos informations personnelles. Votre confidentialité est une priorité pour nous.</p>
+                </div>
+            </div>
+            <!-- Ajoutez plus de questions de FAQ ici -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="successModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <img src="{% static 'img/success.jfif' %}" alt="Success Image" class="modal-image">
+            <p>Message envoyé avec succès</p>
+            <p>Vous recevrez une réponse bientôt</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("contact-form");
+            const modal = document.getElementById("successModal");
+            const redirectTo = "{% url 'property_list' %}"; // Remplacez par l'URL de votre page de destination
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Empêcher le rechargement de la page
+
+                fetch("{% url 'contact' %}", {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        modal.style.display = "flex"; // Afficher le modal de confirmation
+                        setTimeout(function() {
+                            window.location.href = redirectTo;
+                        }, 3000);
+                    } else {
+                        alert('Erreur lors de l\'envoi du formulaire.'); // Afficher une alerte en cas d'erreur
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+            });
+
+            // Toggle answer visibility
+            window.toggleAnswer = function(element) {
+                const answer = element.nextElementSibling;
+                const isVisible = answer.style.display === 'block';
+                answer.style.display = isVisible ? 'none' : 'block';
+                element.classList.toggle('active', !isVisible);
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

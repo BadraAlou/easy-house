@@ -1,0 +1,483 @@
+{% extends "EasyHouse/base.html" %}
+{% block content %}
+<style>
+    .property-detail-container {
+        margin: 30px;
+        font-family: Arial, sans-serif;
+        margin-top: 9%;
+    }
+
+    .property-header h1 {
+        font-size: -4px;
+        margin-bottom: 10px;
+    }
+
+    .property-main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .property-main-image img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .property-secondary-images {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .property-secondary-images .property-image img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .property-view-all {
+        grid-column: span 2;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .view-all-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .property-info {
+        grid-column: span 2;
+        margin-top: 20px;
+    }
+
+    .property-info p {
+        margin: 5px 0;
+    }
+    .property-description {
+        margin-top: 20px;
+        background-color: #f9f9f9; /* Couleur de fond */
+        padding: 20px; /* Espacement interne */
+        border-radius: 10px; /* Coins arrondis */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée */
+        
+    }
+
+    .property-description p.description {
+        font-size: 20px; /* Taille de police */
+        line-height: 1.6; /* Hauteur de ligne pour une meilleure lisibilité */
+        color: #333; /* Couleur du texte */
+        text-align: justify; /* Justifier le texte pour un alignement plus propre */
+        font-family: 'Georgia', serif; /* Police élégante */
+    }
+
+   
+    .property-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .detail-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;  /* Centre verticalement */
+        align-items: center;  /* Centre horizontalement */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-align: center;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .detail-icon {
+        font-size: 24px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .detail-info h4 {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .detail-info p {
+        margin: 5px 0 0;
+        font-size: 18px;
+        color: #666;
+        font-weight: 900; /* Mettre le texte en gras */
+    }
+
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 1); /* Fond blanc */
+        overflow-y: auto; /* Permet de faire défiler les images */
+        justify-content: flex-end; /* Aligne les images à droite */
+        align-items: center; /* Centre verticalement les images */
+    }
+
+    .modal-content {
+        position: relative;
+        width: 50%; /* Largeur du contenu modal */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; /* Aligne le contenu à droite */
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 1); /* Fond blanc */
+        border-radius: 10px;
+        
+        
+    }
+    .modal-close {
+        position: fixed;
+        top: 10%;
+        left: 20px;
+        font-size: 80px;
+        font-weight: 900;
+        color: black;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    
+    .modal-close:before {
+        content: '←'; /* Utiliser une flèche de retour */
+    }
+
+    .modal-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    .images-container {
+        width: 100%; /* Largeur des images */
+        overflow-y: auto; /* Permet de faire défiler les images */
+    }
+
+    .description-container {
+        position: fixed; /* Positionnement fixe */
+        top: 50%; /* Centre verticalement */
+        left: 5%; /* Positionnement à gauche */
+        transform: translateY(-50%); /* Centre parfaitement verticalement */
+        background-color: rgba(255, 255, 255, 0.8); /* Fond blanc avec un peu de transparence */
+        padding: 10px 20px; /* Espacement autour du texte */
+        border-radius: 10px; /* Coins arrondis */
+        z-index: 1001; /* Assure que la description est au-dessus de tout */
+    }
+
+    .description-text {
+        font-size: 40px;
+        font-weight: 900;
+    }
+    
+
+    .modal-category-navigation {
+        display: flex;
+        justify-content: space-around;
+        background-color: #f8f9fa;
+        padding: 10px;
+        width: 100%;
+        z-index: 1001; /* Assure que la navigation est au-dessus de tout */
+        border-bottom: 1px solid #dee2e6;
+        position: fixed; /* Positionnement fixe */
+        top: 0;
+        left: 0;
+    }
+
+    .modal-category-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .modal-category-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .modal-category-item span {
+        font-size: 14px;
+        color: #007bff;
+        text-align: center;
+    }
+
+    .modal-section {
+        margin-top: 60px; /* Adjust for fixed navigation */
+        padding-top: 20px;
+    }
+    .property-actions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .btn-interest {
+        background-color:black; /* Vert */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    
+    @media (max-width: 768px) {
+        .property-main {
+            flex-direction: column;
+        }
+        .property-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            margin-top: 20%;
+        }
+    
+    
+        .property-main img {
+            margin-bottom: 10px;
+        }
+        .property-main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .modal-content {
+            width: 100%; /* Utiliser toute la largeur de l'écran */
+        }
+
+        .description-text {
+            font-size: 20px;
+        }
+
+        .modal-category-navigation img {
+            width: 50px;
+            height: 40px;
+        }
+        .property-description p.description{
+            font-size: 15px;
+        }
+        
+        
+    }
+</style>
+
+<div class="property-detail-container">
+    <div class="property-header">
+        <h1>{{ property.titre }}</h1>
+    </div>
+    <div class="property-main">
+        {% if property.photos.exists %}
+        <div class="property-main-image">
+            <img src="{{ property.photos.first.image.url }}" alt="Image principale de la maison">
+        </div>
+        <div class="property-secondary-images">
+            {% for photo in property.photos.all|slice:"1:"|slice:":4" %} {# Exclure la première image principale #}
+            <div class="property-image">
+                <img src="{{ photo.image.url }}" alt="Image de la maison">
+            </div>
+            {% endfor %}
+        </div>
+        <div class="property-view-all">
+            <a href="#" class="view-all-button" onclick="showAllPhotos()">Afficher toutes les photos</a>
+        </div>
+        {% else %}
+        <p>Aucune photo disponible pour cette propriété.</p>
+        {% endif %}
+    </div>
+    <div class="property-description">
+        <p class="description">{{ property.description }}</p>
+    </div>
+    <div class="property-details">
+        <!-- Ajouter le nombre de salons en premier -->
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F6CB;</div> <!-- Icône pour le nombre de salons -->
+            <div class="detail-info">
+                <h4>Salons</h4>
+                <p>{{ property.nombre_de_salons }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F6CF;</div> <!-- Icône pour chambres -->
+            <div class="detail-info">
+                <h4>Nombre de Chambres</h4>
+                <p>{{ property.nombre_de_chambres }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F6BD;</div> <!-- Icône pour toilettes -->
+            <div class="detail-info">
+                <h4>Nombre de Toilettes</h4>
+                <p>{{ property.nombre_de_toilettes }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F3E0;</div> <!-- Icône pour superficie interne -->
+            <div class="detail-info">
+                <h4>Superficie Interne</h4>
+                <p>{{ property.superficie_interne }} m²</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F6E0;</div> <!-- Icône pour wifi -->
+            <div class="detail-info">
+                <h4>Wifi</h4>
+                <p>{{ property.wifi }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F4B0;</div> <!-- Icône pour prix -->
+            <div class="detail-info">
+                <h4>Prix</h4>
+                <p>{{ property.prix }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F6D2;</div> <!-- Icône pour terrasse -->
+            <div class="detail-info">
+                <h4>Terrasse</h4>
+                <p>{{ property.terrasse }}</p>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F17F;</div> <!-- Icône pour parking -->
+            <div class="detail-info">
+                <h4>Parking</h4>
+                <p>{{ property.parking }}</p>
+            </div>
+        </div>
+        <!-- Ajouter l'adresse -->
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F3E0;</div> <!-- Icône pour l'adresse -->
+            <div class="detail-info">
+                <h4>Adresse</h4>
+                <p>{{ property.address }}</p>
+            </div>
+        </div>
+        <!-- Ajouter le type de propriété -->
+        <div class="detail-card">
+            <div class="detail-icon">&#x1F3DA;</div> <!-- Icône pour le type de propriété -->
+            <div class="detail-info">
+                <h4>Type d'appartement</h4>
+                <p>{{ property.property_type }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="property-actions">
+        <button id="btn-interest" class="btn-interest">Je suis intéressé</button>
+    </div>
+<!-- Modal for displaying all photos -->
+<div id="photoModal" class="modal-overlay" style="background-color: #58BFC6;">
+    <div class="modal-content" style="background-color: #58BFC6;">
+        <div class="modal-category-navigation">
+            {% for description, photo in category_photos %}
+            <div class="modal-category-item" onclick="scrollToDescription('{{ description }}')">
+                <img src="{{ photo.image.url }}" alt="{{ description }}">
+                <span>{{ description }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="modal-close" onclick="closeModal()"></div>
+        <div class="description-container" id="photoDescription">
+            <p class="description-text" id="descriptionText"></p>
+        </div>
+        <div class="images-container">
+            {% for photo in property.photos.all %}
+            <div class="modal-image modal-section" data-description="{{ photo.description }}">
+                <img src="{{ photo.image.url }}" alt="{{ photo.description }}">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+function showAllPhotos() {
+    document.getElementById('photoModal').style.display = 'flex';
+    updateDescriptionOnScroll(); // Initial update
+}
+
+function closeModal() {
+    document.getElementById('photoModal').style.display = 'none';
+    document.getElementById('photoDescription').style.display = 'none';
+}
+
+function updateDescriptionOnScroll() {
+    var imagesContainer = document.querySelector('.images-container');
+    var sections = document.querySelectorAll('.modal-section');
+    var descriptionText = document.getElementById('descriptionText');
+
+    var closestSection = null;
+    var closestDistance = Infinity;
+
+    sections.forEach(section => {
+        var rect = section.getBoundingClientRect();
+        var distance = Math.abs(rect.top - imagesContainer.getBoundingClientRect().top);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestSection = section;
+        }
+    });
+
+    if (closestSection) {
+        var description = closestSection.getAttribute('data-description');
+        descriptionText.textContent = description;
+    }
+}
+
+function scrollToDescription(description) {
+    var sections = document.querySelectorAll('.modal-section');
+    for (var section of sections) {
+        if (section.getAttribute('data-description') === description) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            break; // Stop looping after the first match
+        }
+    }
+}
+
+document.querySelector('.images-container').addEventListener('scroll', updateDescriptionOnScroll);
+document.getElementById("btn-interest").addEventListener("click", function() {
+    window.location.href = "{% url 'rental_form' %}"; // Redirige vers la page du formulaire
+});
+</script>
+{% endblock %}

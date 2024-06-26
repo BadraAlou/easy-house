@@ -1,0 +1,40 @@
+footer {
+    background-color: white;
+    color: #111111;
+    padding: 20px 0;
+    text-align: center; /* Pour centrer le contenu du footer */
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-top {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour aligner le texte et les icônes au centre */
+    margin-bottom: 20px;
+}
+
+.footer-top p {
+    margin: 0;
+    margin-right: 15px; /* Pour créer un espace entre le texte et les icônes */
+}
+
+.social-icons a {
+    color: #050505; /* Couleur des icônes */
+    text-decoration: none; /* Pour supprimer tout soulignement */
+}
+.social-icons a:not(:last-child) {
+    margin-right: 15px; /* Pour créer un espace entre les icônes */
+}
+
+.social-icons a:hover {
+    color: #ccc; /* Couleur au survol */
+}
+
+.footer-bottom img {
+    max-width: 60%; /* Ajustez la largeur de l'image pour ne pas dépasser la largeur du footer */
+    margin-left: 18%;
+}

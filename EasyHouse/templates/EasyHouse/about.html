@@ -1,0 +1,254 @@
+{% extends "EasyHouse/base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notre équipe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .section {
+            padding: 50px 0;
+        }
+
+        .icon {
+            font-size: 50px;
+            color: #87CEEB; /* Light sky blue color */
+        }
+
+        .frame, .team-member {
+            text-align: center;
+            background-color: white;
+            padding: 15px; /* Reduced padding */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            min-height: 250px; /* Set minimum height */
+        }
+
+        .team-member img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .frame img {
+            border-radius: 10px;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .contact-btn {
+            background-color: #057d8d; /* Light sky blue color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .contact-btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .why-choose-us img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .why-choose-us img:hover {
+            transform: scale(1.05);
+        }
+
+        .content-section {
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            font-size: 1.2em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Add margin-top for larger screens */
+        @media (min-width: 992px) {
+            .content-section {
+                margin-top: 60px; /* Adjust this value as needed */
+            }
+        }
+
+        /* Add margin-bottom for frames on small screens */
+        @media (max-width: 767.98px) {
+            .frame {
+                margin-bottom: 20px !important;
+            }
+        }
+
+        .team-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-member {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .team-member img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .team-member-content {
+            padding: 20px;
+            text-align: left;
+        }
+
+        @media (min-width: 992px) {
+            .team-member {
+                flex-direction: row;
+            }
+
+            .team-member img {
+                width: 30%; /* Reduce image width to 30% */
+                height: auto;
+                border-radius: 10px 0 0 10px;
+            }
+
+            .team-member-content {
+                width: 70%; /* Adjust content width to 70% */
+                padding: 50px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pourquoi Nous Choisir Section -->
+        <div class="row section">
+            <div class="col-md-6 text-center text-md-left">
+                <img src="{% static 'img/about-img.svg' %}" alt="Pourquoi Nous Choisir Image" class="why-choose-us">
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center content-section">
+                <h2>Que ce que Easy House fait ?</h2>
+                <p><strong>Nous sommes une plateforme immobilière de premier plan dédiée à la mise en relation des propriétaires et des agences avec des clients potentiels. Notre mission est de fournir un moyen simple et efficace de promouvoir les propriétés et de trouver la maison parfaite pour chacun.</strong></p>
+                <div class="d-flex justify-content-center justify-content-md-start">
+                    <a href="{% url 'contact' %}" class="contact-btn align-self-center align-self-md-start">Contactez-Nous</a>
+                </div>
+            </div>
+        </div>
+        <div class="row section text-center">
+            <div class="col-12">
+                <h2>Nos Missions</h2>
+            </div>
+            <div class="col-md-4 d-flex p-2">
+                <div class="frame">
+                    <div class="icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3>Promotion des Propriétés</h3>
+                    <p>
+                        Nous aidons les propriétaires et les agences à promouvoir efficacement leurs biens immobiliers grâce à notre plateforme.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex p-2">
+                <div class="frame">
+                    <div class="icon">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3>Recherche Facile</h3>
+                    <p>
+                        Nous simplifions la recherche de la maison idéale pour les locataires en fournissant des outils de recherche avancés et des filtres personnalisés.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex p-2">
+                <div class="frame">
+                    <div class="icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Support Client</h3>
+                    <p>
+                        Nous offrons un support client exceptionnel pour répondre aux questions et préoccupations des utilisateurs, assurant une expérience fluide et agréable.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notre équipe Section -->
+        <div class="team-section">
+            <div class="col-12 text-center">
+                <h2>Notre équipe</h2>
+            </div>
+            {% for membre in equipe %}
+            <div class="team-member">
+                <img src="{{ membre.photo.url }}" alt="{{ membre.nom }}">
+                <div class="team-member-content">
+                    <h4><strong>{{ membre.nom }}</h4></strong>
+                    <p style="color: #057d8d;"><strong>{{ membre.poste }}</strong></p>
+                    <p>{{ membre.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}
