@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f078*doay)ac#iz=r)pk@ata$9ikt8i0o=f(7b2_b6vx2y1kwq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['easy-house-mali.com', 'www.easy-house-mali.com', 'localhost']
+ALLOWED_HOSTS = ['31.207.33.174' ,'easy-house-mali.com', 'www.easy-house-mali.com', 'localhost']
 
 # Application definition
 
